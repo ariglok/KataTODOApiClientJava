@@ -20,6 +20,7 @@ import java.util.List;
 
 public class TodoApiClientPlayground {
 
+
   public static void main(String[] args) {
     TodoApiClient todoApiClient = new TodoApiClient();
     try {
