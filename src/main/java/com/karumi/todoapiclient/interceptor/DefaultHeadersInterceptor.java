@@ -27,7 +27,9 @@ public class DefaultHeadersInterceptor implements Interceptor {
     request = request.newBuilder()
         .addHeader("Accept", "application/json")
         .addHeader("Content-Type", "application/json")
-        .build();
+            .addHeader("Accept-Language", "en-es")
+
+            .build();
     return chain.proceed(request);
   }
 }

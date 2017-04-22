@@ -50,7 +50,7 @@ public class TodoApiClientTest extends MockWebServerTest {
   }
 
   @Test public void parsesTasksProperlyGettingAllTheTasks() throws Exception {
-    enqueueMockResponse(200, "getTasksResponse.json");
+    enqueueMockResponse(200, "getTasksResponse.json"); //json de vuelta
 
     List<TaskDto> tasks = apiClient.getAllTasks();
 
@@ -63,5 +63,14 @@ public class TodoApiClientTest extends MockWebServerTest {
     assertEquals(task.getUserId(), "1");
     assertEquals(task.getTitle(), "delectus aut autem");
     assertFalse(task.isFinished());
+  }
+  @Test public void sendsHeaderWhitAcceptLanguage() throws Exception {
+
+    enqueueMockResponse();
+
+    apiClient.getAllTasks();
+
+    assertRequestContainsHeader("Accept-Language", "en-es");
+
   }
 }
