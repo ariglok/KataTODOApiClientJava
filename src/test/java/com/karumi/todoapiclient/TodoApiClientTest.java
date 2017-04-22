@@ -96,29 +96,29 @@ public class TodoApiClientTest extends MockWebServerTest {
   }
 
   @Test public void sendsGetTaskByIdPath() throws Exception {
-    enqueueMockResponse();
+      enqueueMockResponse();
 
-    apiClient.getTaskById("2");
+      apiClient.getTaskById("2");
 
-    assertGetRequestSentTo("/todos/2");
+      assertGetRequestSentTo("/todos/2");
   }
 
   @Test public void parsesTheTaskGettingItById() throws Exception {
-    enqueueMockResponse(200, "getTaskByIdResponse.json");  // Devuelve 200 con este json
+      enqueueMockResponse(200, "getTaskByIdResponse.json");  // Devuelve 200 con este json
 
-    TaskDto task = apiClient.getTaskById("1");  //hacemos un get del task con id 1
+      TaskDto task = apiClient.getTaskById("1");  //hacemos un get del task con id 1
 
-    assertEquals("2", task.getId());  // Comprobamos qu la respuesta que los campos coinciden con los del fichero
-    assertEquals("1", task.getUserId());
-    assertEquals("delectus aut autem", task.getTitle());
-    assertFalse(task.isFinished());
+      assertEquals("2", task.getId());  // Comprobamos qu la respuesta que los campos coinciden con los del fichero
+      assertEquals("1", task.getUserId());
+      assertEquals("delectus aut autem", task.getTitle());
+      assertFalse(task.isFinished());
   }
 
   @Test(expected = ItemNotFoundException.class)
   public void returnsItemNotFoundIfTheTaskDoesNotExist() throws Exception  {
-    enqueueMockResponse(404);
+      enqueueMockResponse(404);
 
-    apiClient.getTaskById("1");
+      apiClient.getTaskById("1");
   }
 
   @Test public void sendsPostTaskByIdPath() throws Exception {
@@ -129,13 +129,38 @@ public class TodoApiClientTest extends MockWebServerTest {
       assertPostRequestSentTo("/todos");
   }
 
-  /*@Test public void sendsPostTaskByIdContentTypeHeaders() throws Exception {
+  @Test public void sendsPostTaskByIdContentTypeHeaders() throws Exception {
 
       enqueueMockResponse();
 
       apiClient.addTask(new TaskDto("1","2","delectus aut autem",false));
 
       assertRequestContainsHeader("id", "1");
-  }*/
+  }
+    // Usando este Json comprobamos que el id del Task que nos devuelve es 1. Para ello creamos un objeto de tipos task con id null llamamos al metodo addTask y ahora
+    // tendremos el objeto de salida que es el createTask. Ahora creamos el objeto que esperamos expectedTask y los comparamos
+    @Test public void returnTaskIdExpectedResponse() throws Exception {
+
+      enqueueMockResponse(200, "AddTaskResponse.json");
+
+      TaskDto task = new TaskDto(null,"1","delectus aut autem",false);
+      TaskDto createTask = apiClient.addTask(task);
+
+      TaskDto expectedTask = new TaskDto("1","1","delectus aut autem",false);
+
+      assertEquals(createTask.getId(),expectedTask.getId());
+      assertEquals(createTask.getUserId(),expectedTask.getUserId());
+      assertEquals(createTask.getTitle(),expectedTask.getTitle());
+      assertEquals(createTask.isFinished(),expectedTask.isFinished());
+
+  }
+    @Test public void returTaskBodyExpectedResponse() throws Exception {
+        enqueueMockResponse();
+
+        TaskDto task = new TaskDto("1","2","Finish this kata",false);
+        apiClient.updateTaskById(task);
+
+        assertRequestBodyEquals("updateTaskRequest.json");
+    }
 
 }
