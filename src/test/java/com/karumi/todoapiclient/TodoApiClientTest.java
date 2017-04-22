@@ -108,7 +108,7 @@ public class TodoApiClientTest extends MockWebServerTest {
 
       TaskDto task = apiClient.getTaskById("1");  //hacemos un get del task con id 1
 
-      assertEquals("2", task.getId());  // Comprobamos qu la respuesta que los campos coinciden con los del fichero
+      assertEquals("2", task.getId());  // Comprobamos que la respuesta que los campos coinciden con los del fichero
       assertEquals("1", task.getUserId());
       assertEquals("delectus aut autem", task.getTitle());
       assertFalse(task.isFinished());
@@ -143,7 +143,7 @@ public class TodoApiClientTest extends MockWebServerTest {
 
       enqueueMockResponse(200, "AddTaskResponse.json");
 
-      TaskDto task = new TaskDto("","1","delectus aut autem",false);
+      TaskDto task = new TaskDto(null,"1","delectus aut autem",false);
       TaskDto createTask = apiClient.addTask(task);
 
       TaskDto expectedTask = new TaskDto("1","1","delectus aut autem",false);
