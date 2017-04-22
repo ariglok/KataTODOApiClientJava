@@ -16,6 +16,11 @@
 package com.karumi.todoapiclient;
 
 import com.karumi.todoapiclient.dto.TaskDto;
+import com.karumi.todoapiclient.exception.ItemNotFoundException;
+import com.karumi.todoapiclient.exception.TodoApiClientException;
+import com.karumi.todoapiclient.exception.UnknownErrorException;
+
+import java.io.IOException;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,11 +88,11 @@ public class TodoApiClientTest extends MockWebServerTest {
     assertTrue(tasks.isEmpty());
   }
 
-  @Test public void retur() throws Exception {
-    enqueueMockResponse(200, "getTasksResponseEmptyList.json");
+  @Test(expected = ItemNotFoundException.class)
+  public void returnToExitError404() throws Exception {
+      enqueueMockResponse(404);
 
-    List<TaskDto> tasks = apiClient.getAllTasks();
-
-    assertTrue(tasks.isEmpty());
+      List<TaskDto> tasks = apiClient.getAllTasks();
   }
+
 }
