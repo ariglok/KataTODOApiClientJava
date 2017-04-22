@@ -91,8 +91,9 @@ public class TodoApiClientTest extends MockWebServerTest {
   @Test(expected = ItemNotFoundException.class)
   public void returnToExitError404() throws Exception {
       enqueueMockResponse(404);
-
       List<TaskDto> tasks = apiClient.getAllTasks();
+      
   }
+
 
 }
