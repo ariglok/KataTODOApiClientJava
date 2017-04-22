@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TodoApiClientTest extends MockWebServerTest {
 
@@ -64,6 +65,7 @@ public class TodoApiClientTest extends MockWebServerTest {
     assertEquals(task.getTitle(), "delectus aut autem");
     assertFalse(task.isFinished());
   }
+
   @Test public void sendsHeaderWhitAcceptLanguage() throws Exception {
 
     enqueueMockResponse();
@@ -71,6 +73,21 @@ public class TodoApiClientTest extends MockWebServerTest {
     apiClient.getAllTasks();
 
     assertRequestContainsHeader("Accept-Language", "en-es");
+  }
 
+  @Test public void returnToEmptyListWhitToExpectedValues() throws Exception {
+    enqueueMockResponse(200, "getTasksResponseEmptyList.json");
+
+    List<TaskDto> tasks = apiClient.getAllTasks();
+
+    assertTrue(tasks.isEmpty());
+  }
+
+  @Test public void retur() throws Exception {
+    enqueueMockResponse(200, "getTasksResponseEmptyList.json");
+
+    List<TaskDto> tasks = apiClient.getAllTasks();
+
+    assertTrue(tasks.isEmpty());
   }
 }
