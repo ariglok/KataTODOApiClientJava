@@ -143,7 +143,7 @@ public class TodoApiClientTest extends MockWebServerTest {
 
       enqueueMockResponse(200, "AddTaskResponse.json");
 
-      TaskDto task = new TaskDto(null,"1","delectus aut autem",false);
+      TaskDto task = new TaskDto("","1","delectus aut autem",false);
       TaskDto createTask = apiClient.addTask(task);
 
       TaskDto expectedTask = new TaskDto("1","1","delectus aut autem",false);
@@ -154,7 +154,7 @@ public class TodoApiClientTest extends MockWebServerTest {
       assertEquals(createTask.isFinished(),expectedTask.isFinished());
 
   }
-    @Test public void returTaskBodyExpectedResponse() throws Exception {
+    @Test public void returnTaskBodyExpectedResponse() throws Exception {
         enqueueMockResponse();
 
         TaskDto task = new TaskDto("1","2","Finish this kata",false);
