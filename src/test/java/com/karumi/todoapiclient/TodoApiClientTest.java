@@ -92,8 +92,50 @@ public class TodoApiClientTest extends MockWebServerTest {
   public void returnToExitError404() throws Exception {
       enqueueMockResponse(404);
       List<TaskDto> tasks = apiClient.getAllTasks();
-      
+
   }
 
+  @Test public void sendsGetTaskByIdPath() throws Exception {
+    enqueueMockResponse();
+
+    apiClient.getTaskById("2");
+
+    assertGetRequestSentTo("/todos/2");
+  }
+
+  @Test public void parsesTheTaskGettingItById() throws Exception {
+    enqueueMockResponse(200, "getTaskByIdResponse.json");  // Devuelve 200 con este json
+
+    TaskDto task = apiClient.getTaskById("1");  //hacemos un get del task con id 1
+
+    assertEquals("2", task.getId());  // Comprobamos qu la respuesta que los campos coinciden con los del fichero
+    assertEquals("1", task.getUserId());
+    assertEquals("delectus aut autem", task.getTitle());
+    assertFalse(task.isFinished());
+  }
+
+  @Test(expected = ItemNotFoundException.class)
+  public void returnsItemNotFoundIfTheTaskDoesNotExist() throws Exception  {
+    enqueueMockResponse(404);
+
+    apiClient.getTaskById("1");
+  }
+
+  @Test public void sendsPostTaskByIdPath() throws Exception {
+      enqueueMockResponse();
+
+      apiClient.addTask(new TaskDto("1","2","delectus aut autem",false));
+
+      assertPostRequestSentTo("/todos");
+  }
+
+  /*@Test public void sendsPostTaskByIdContentTypeHeaders() throws Exception {
+
+      enqueueMockResponse();
+
+      apiClient.addTask(new TaskDto("1","2","delectus aut autem",false));
+
+      assertRequestContainsHeader("id", "1");
+  }*/
 
 }
